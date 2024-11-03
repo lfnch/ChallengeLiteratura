@@ -8,13 +8,13 @@ Con el siguiente proyecto se pretende desarrollar un Catálogo de Libros que ofr
 ## Indice.
 1.[ Contexto de negocio.](#1.-contextode-de-negocio.)
 
-2.[ Visión de la solución.](#2.-Visión-de-la-solución)
+2.[ Visión de la solución.](#2.-Visión-de-la-solución.)
 
-3.[ Alcance y limitaciones.](#3.-Alcance-y-limitaciones)
+3.[ Alcance y limitaciones.](#3.-Alcance-y-limitaciones.)
 
-4.[ Contexto del sistema.](#4.-Contexto-del-sistema)
+4.[ Contexto del sistema.](#4.-Contexto-del-sistema.)
 
-5.[ Informacion adiccional.](#5.-Informacion-adiccional)
+5.[ Informacion adiccional.](#5.-Informacion-adiccional.)
 
 ## 1. Contexto de negocio.
 
