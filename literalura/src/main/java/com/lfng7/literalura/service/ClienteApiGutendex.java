@@ -157,7 +157,84 @@ public class ClienteApiGutendex {
     }
 
     public void buscarPorNombreAutor(Scanner scanner) {
+        int opcion = 0;
+        int pagina = 1;
+        long registrosEncontrados = 0;
+        double totalPaginas = 1;
+        String nombreBuscar = "";
+        String opciones = """
+            Seleccione una opcion :
+            1. Buscar autor
+            2. Anterior pagina <-
+            3. Siguiente pagina ->
+            4. Salir
+            """;
 
+        try {
+            while (opcion != 4) {
+                scanner.nextLine();
+
+                if(opcion == 1) {
+                    System.out.println("Ingrese un nombre : ");
+                    nombreBuscar = scanner.nextLine().trim();
+                }
+
+                //Pagina Anterior
+                if(opcion == 2 && pagina > 1) {
+                    pagina = pagina - 1;
+                }
+
+                //Pagina Siguiente
+                if(opcion == 3 && pagina < totalPaginas) {
+                    pagina = pagina + 1;
+                }
+
+                if(!nombreBuscar.isEmpty()) {
+                    if(opcion == 1) {
+                        nombreBuscar = nombreBuscar.toLowerCase().replace(" ", "%20");
+                    }
+
+                    String datosApi = clienteApi.obtenerDatos(URL_API + "/?page=" + pagina +
+                            "&search=" + nombreBuscar);
+
+                    var listaLibros = objectMapper.readValue(datosApi, ListaLibroRecord.class);
+
+                    String finalNombreBuscar = nombreBuscar;
+                    var listaLibrosAutor = listaLibros.resultados().stream()
+                            .filter(libro -> libro.autores().stream()
+                                    .anyMatch(autor -> autor.nombre().toLowerCase().replace(" ", "%20").contains(finalNombreBuscar)))
+                            .collect(Collectors.toList());
+
+                    registrosEncontrados =  listaLibrosAutor.stream().count();
+
+                    if(registrosEncontrados > 0) {
+                        totalPaginas = Math.ceil((double) registrosEncontrados / 32.0);
+                    }
+
+                    System.out.println("Registros encontrados : " + registrosEncontrados);
+                    System.out.println("Pagina : " + pagina + " de : " + totalPaginas);
+
+                    listaLibrosAutor.stream().forEach(libro -> {
+                        String titulo =  libro.titulo();
+                        String autores = libro.autores().stream()
+                                .map(autor -> autor.nombre())
+                                .collect(Collectors.joining(", "));
+
+                        System.out.println("LIBRO : " + titulo + " | AUTORES : " + autores);
+                    });
+
+                    opcion = 0;
+                }
+
+                System.out.println(opciones);
+                opcion = scanner.nextInt();
+            }
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        } catch (RuntimeException e) {
+            scanner.next();
+            this.buscarPorNombreAutor(scanner);
+        }
     }
 
     public void buscarPorIdioma(Scanner scanner) {
