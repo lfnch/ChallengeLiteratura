@@ -127,7 +127,7 @@ public class LiteraluraApplication implements CommandLineRunner {
             3 -> Buscar libro.
             4 -> Ver todo autores.
             5 -> Buscar libro por idioma.
-            6 -> Buscar libro por rango de años.
+            6 -> Autores vivos por rango de años.
             7 -> Regresar.
             """;
         String mensajeError = "Entrada no valida, intente de nuevo";
@@ -289,6 +289,35 @@ public class LiteraluraApplication implements CommandLineRunner {
                                 libros.stream().forEach(libro -> System.out.println("LIBRO : " + libro.getTitle()));
                             } else {
                                 System.out.println("No se encontraron registros");
+                            }
+                        }
+                    }
+
+                    case 6 -> {
+                        System.out.println("""
+                        Ingrese rango de años de, hasta : 
+                        Ejemplo : 1993-2024
+                        """);
+                        scanner.nextLine();
+                        String fechaBuscar = scanner.nextLine().trim();
+                        String patron = "\\d{4}-\\d{4}";
+                        boolean esValido = fechaBuscar.matches(patron);
+                        if(!esValido) {
+                            System.out.println("Formato de rango no valido");
+                        } else {
+                            String partes[] = fechaBuscar.split("-");
+                            int anoInicio = Integer.parseInt(partes[0]);
+                            int anoFinal = Integer.parseInt(partes[1]);
+
+                            if(anoInicio > anoFinal) {
+                                System.out.println("La fecha final no puede ser menor a la fecha de inicio.");
+                            } else {
+                                List<AutorEntity> autores = autorService.autoresVivos(anoInicio, anoFinal);
+                                if(autores.stream().count() > 0) {
+                                    autores.stream().forEach(autor -> System.out.println("Autor : " + autor.getName()));
+                                } else {
+                                    System.out.println("No se encontraron registros");
+                                }
                             }
                         }
                     }

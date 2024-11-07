@@ -40,4 +40,9 @@ public class AutorService {
     public List<AutorEntity> findAll() {
         return repository.findAll();
     }
+
+    @Transactional
+    public List<AutorEntity> autoresVivos(int desde, int hasta) {
+        return repository.autoresVivosRangoAnos(desde, hasta);
+    }
 }

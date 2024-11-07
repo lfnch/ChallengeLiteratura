@@ -391,7 +391,7 @@ public class ClienteApiGutendex {
                     }
 
                     String datosApi = clienteApi.obtenerDatos(URL_API + "/?page=" + pagina +
-                            "&author_year_start=" + anoInicio + "&author_year_end=1899=" + anoFinal);
+                            "&author_year_start=" + anoInicio + "&author_year_end=" + anoFinal);
 
                     var listaLibros = objectMapper.readValue(datosApi, ListaLibroDto.class);
                     registrosEncontrados =  listaLibros.cuenta();
