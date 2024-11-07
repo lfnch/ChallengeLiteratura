@@ -2,7 +2,7 @@ package com.lfng7.literalura.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.lfng7.literalura.model.ListaLibroRecord;
+import com.lfng7.literalura.model.ListaLibroDto;
 
 import java.util.Scanner;
 import java.util.stream.Collectors;
@@ -49,7 +49,7 @@ public class ClienteApiGutendex {
 
                 try {
                     //Convertir los datos
-                    var listaLibros = objectMapper.readValue(datosApi, ListaLibroRecord.class);
+                    var listaLibros = objectMapper.readValue(datosApi, ListaLibroDto.class);
                     long totalPaginas = listaLibros.cuenta() / 32;
 
                     System.out.println("Pagina : " + pagina + " de : " + totalPaginas);
@@ -123,7 +123,7 @@ public class ClienteApiGutendex {
                     String datosApi = clienteApi.obtenerDatos(URL_API + "/?page=" + pagina +
                             "&search=" + nombreBuscar);
 
-                    var listaLibros = objectMapper.readValue(datosApi, ListaLibroRecord.class);
+                    var listaLibros = objectMapper.readValue(datosApi, ListaLibroDto.class);
                     registrosEncontrados =  listaLibros.cuenta();
 
                     if(registrosEncontrados > 0) {
@@ -197,7 +197,7 @@ public class ClienteApiGutendex {
                     String datosApi = clienteApi.obtenerDatos(URL_API + "/?page=" + pagina +
                             "&search=" + nombreBuscar);
 
-                    var listaLibros = objectMapper.readValue(datosApi, ListaLibroRecord.class);
+                    var listaLibros = objectMapper.readValue(datosApi, ListaLibroDto.class);
 
                     String finalNombreBuscar = nombreBuscar;
                     var listaLibrosAutor = listaLibros.resultados().stream()
@@ -285,7 +285,7 @@ public class ClienteApiGutendex {
                     String datosApi = clienteApi.obtenerDatos(URL_API + "/?page=" + pagina +
                             "&languages=" + lenguajeBuscar);
 
-                    var listaLibros = objectMapper.readValue(datosApi, ListaLibroRecord.class);
+                    var listaLibros = objectMapper.readValue(datosApi, ListaLibroDto.class);
                     registrosEncontrados =  listaLibros.cuenta();
 
                     if(registrosEncontrados > 0) {
@@ -393,7 +393,7 @@ public class ClienteApiGutendex {
                     String datosApi = clienteApi.obtenerDatos(URL_API + "/?page=" + pagina +
                             "&author_year_start=" + anoInicio + "&author_year_end=1899=" + anoFinal);
 
-                    var listaLibros = objectMapper.readValue(datosApi, ListaLibroRecord.class);
+                    var listaLibros = objectMapper.readValue(datosApi, ListaLibroDto.class);
                     registrosEncontrados =  listaLibros.cuenta();
 
                     if(registrosEncontrados > 0) {

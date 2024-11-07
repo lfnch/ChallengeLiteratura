@@ -1,4 +1,4 @@
-package com.lfng7.literalura.persistence;
+package com.lfng7.literalura.persistence.entity;
 
 import jakarta.persistence.*;
 
@@ -11,5 +11,6 @@ public class ListaLibroEntity {
     private long id;
 
     private String fechaActual;
+
 
 }
