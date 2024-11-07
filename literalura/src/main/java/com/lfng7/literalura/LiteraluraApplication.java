@@ -125,7 +125,7 @@ public class LiteraluraApplication implements CommandLineRunner {
             1 -> Actualizar catalogo de libros.
             2 -> Ver todo catalogo.
             3 -> Buscar libro.
-            4 -> Buscar libro por autor.
+            4 -> Ver todo autores.
             5 -> Buscar libro por idioma.
             6 -> Buscar libro por rango de años.
             7 -> Regresar.
@@ -237,10 +237,62 @@ public class LiteraluraApplication implements CommandLineRunner {
                         System.out.println("Proceso terminado.\n");
                     }
 
-                    case 2 -> System.out.println("");
-                    case 3 -> System.out.println("");
-                    case 4 -> System.out.println("");
-                    case 5 -> System.out.println("");
+                    case 2 -> {
+                        List<LibroEntity> libros = libroService.findAll();
+                        if(libros.stream().count() > 0) {
+                            libros.stream().forEach(libro -> System.out.println("LIBRO : " + libro.getTitle()));
+                        } else {
+                            System.out.println("No se encontraron registros");
+                        }
+                    }
+
+                    //Buscar libro por nombre
+                    case 3 -> {
+                        System.out.println("Ingrese un nombre : ");
+                        scanner.nextLine();
+                        String nombreBuscar = scanner.nextLine();
+                        if(!nombreBuscar.equals("")) {
+                            List<LibroEntity> libros = libroService.findByTitle(nombreBuscar);
+                            if(libros.stream().count() > 0) {
+                                libros.stream().forEach(libro -> System.out.println("LIBRO : " + libro.getTitle()));
+                            } else {
+                                System.out.println("No se encontraron registros");
+                            }
+                        }
+                    }
+
+                    //Buscar autores
+                    case 4 -> {
+                        List<AutorEntity> autores = autorService.findAll();
+                        if(autores.stream().count() > 0) {
+                            autores.stream().forEach(autor -> System.out.println("Autor : " + autor.getName()));
+                        } else {
+                            System.out.println("No se encontraron registros");
+                        }
+                    }
+
+                    //Buscar libro por idioma
+                    case 5 -> {
+                        System.out.println("""
+                        Ingrese un lenguaje : 
+                        EN -> Ingles
+                        ES -> Español
+                        FR -> Frances
+                        DE -> Aleman
+                        IT -> Italiano
+                        """);
+                        scanner.nextLine();
+                        String idioma = scanner.nextLine().trim();
+                        if(!idioma.equals("")) {
+                            List<LibroEntity> libros = libroService.buscarPorIdioma(idioma);
+                            if(libros.stream().count() > 0) {
+                                libros.stream().forEach(libro -> System.out.println("LIBRO : " + libro.getTitle()));
+                            } else {
+                                System.out.println("No se encontraron registros");
+                            }
+                        }
+                    }
+
                     default -> {if(opcion > 7) {System.out.println(mensajeError);}}
                 }
             } catch (RuntimeException e) {
@@ -264,7 +316,11 @@ public class LiteraluraApplication implements CommandLineRunner {
             try {
                 opcion = scanner.nextInt();
                 switch (opcion) {
-                    case 1 -> System.out.println("");
+                    case 1 -> {
+                        List<LibroEntity> libros = libroService.top10();
+                        libros.stream().forEach(libro -> System.out.println("LIBRO : " + libro.getTitle() +
+                                "DESCARGAS : " + libro.getDownloadCount()));
+                    }
                     default -> {if(opcion > 2) {System.out.println(mensajeError);}}
                 }
             } catch (RuntimeException e) {
